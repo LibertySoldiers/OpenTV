@@ -7,13 +7,21 @@
     <title>OpenTV</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="icon.png" type="image/png">
 </head>
 
 <body>
+    <svg aria-hidden="true" class="grid-background">
+        <defs>
+            <pattern id="grid-pattern" width="30" height="30" patternUnits="userSpaceOnUse" x="-1" y="-1">
+                <path d="M.5 30V.5H30" fill="none" stroke-dasharray="4 2"></path>
+            </pattern>
+        </defs>
+        <rect width="100%" height="100%" stroke-width="0" fill="url(#grid-pattern)"></rect>
+    </svg>
     <div class="ambient-blur blur-top-left"></div>
     <div class="ambient-blur blur-bottom-right"></div>
     <div class="app-container">
@@ -24,15 +32,20 @@
             </div>
             <div class="nav-links">
                 <a href="https://github.com/mhdgning131/OpenTV/releases/download/release/OpenTV.Player.Setup.1.0.0.exe"
-                    class="nav-btn" download>Download</a>
+                    class="nav-btn liberty-btn" download>
+                    <img src="freedom.svg" alt="Liberty" class="liberty-icon">
+                    <span>LibertySoldiers !</span>
+                </a>
             </div>
         </nav>
         <main class="hero-section">
             <div class="content-wrapper">
+
                 <h1 class="hero-title">
-                    Because why not ?
+                    Because, why not ?
                 </h1>
                 <p class="hero-subtitle">
+                    more than 1300+ channels world wide<br>
                     Free TV, simply.
                 </p>
                 <div class="cta-group">
@@ -43,13 +56,6 @@
                     </a>
                     <span class="version-text">v1.0</span>
                 </div>
-            </div>
-            <div class="floating-container" id="scene">
-                <div class="float-item item-1" data-depth="0.2"><i class="fas fa-code"></i></div>
-                <div class="float-item item-2" data-depth="0.5"><i class="fas fa-play"></i></div>
-                <div class="float-item item-3" data-depth="0.3"><i class="fas fa-layer-group"></i></div>
-                <div class="float-item item-4" data-depth="0.6"><i class="fas fa-star"></i></div>
-                <div class="float-item item-5" data-depth="0.4"><i class="fas fa-tv"></i></div>
             </div>
         </main>
         <footer>
