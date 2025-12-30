@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="website/freedom-white.svg" width="80" height="80" style="border-radius: 20px" />
+  <img src="website/freedom.svg" width="80" height="80" style="border-radius: 20px" />
   <h1>LibertySoldiers !</h1>
   <p><strong>OpenTV</strong> — Modern IPTV, simplified.</p>
 </div>
