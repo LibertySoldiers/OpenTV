@@ -35,8 +35,13 @@ Certainly the most hardened IPTV players:
 - **Privacy by Design**: 
   - **No Analytics**: We don't track you. No Google Analytics, no telemetry.
   - **What we see**: Nothing. The only outgoing connection is to check for updates (`version.json`).
-  - **Hardened Playlist**: Your playlist (`index.m3u`) is embedded locally inside the application. No external server knows what you are loading.
+  - **Hardened Playlist**: Your playlist is already inside the application. No external server knows what you are loading.
   - **What is saved**: Only your Favorites and Last Played Channel are saved locally on your computer.
+
+---
+
+### Note for Windows Users
+Since OpenTV is an independent project not yet signed by Microsoft, you might see a "Windows protected your PC" alert. This is normal. To install: Click "More info" then "Run anyway".
 
 ---
 
