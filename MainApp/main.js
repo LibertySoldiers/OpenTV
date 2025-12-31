@@ -39,7 +39,7 @@ function checkForUpdates() {
         .then(res => res.json())
         .then(data => {
             const currentVersion = app.getVersion();
-            if (data.version && data.version !== currentVersion) {
+            if (data.version && data.version.localeCompare(currentVersion, undefined, { numeric: true, sensitivity: 'base' }) > 0) {
                 if (mainWindow) {
                     mainWindow.webContents.send('update-available', data);
                 }
