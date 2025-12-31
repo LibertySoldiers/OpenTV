@@ -32,7 +32,9 @@
     "win": {
       "target": "nsis",
       "icon": "MainApp/icon.ico",
+      "publisherName": "LibertySoldiers!",
       "verifyUpdateCodeSignature": false,
+      "artifactName": "${productName}.Setup.${version}.${ext}",
       "sign": null
     },
     "nsis": {
