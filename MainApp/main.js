@@ -19,6 +19,21 @@ let mainWindow = null;
 const UPDATE_URL = 'https://open-tv.pages.dev/version.json';
 const CHECK_INTERVAL = 24 * 60 * 60 * 1000;
 
+// Purge du cache physique résiduel (GPU, Shaders, etc.) pour confidentialité totale
+const cachePath = path.join(app.getPath('userData'), 'Cache');
+const codeCachePath = path.join(app.getPath('userData'), 'Code Cache');
+const gpuCachePath = path.join(app.getPath('userData'), 'GPUCache');
+
+[cachePath, codeCachePath, gpuCachePath].forEach(p => {
+    if (fs.existsSync(p)) {
+        try {
+            fs.rmSync(p, { recursive: true, force: true });
+        } catch (e) {
+            console.error('Impossible de supprimer le cache résiduel:', e);
+        }
+    }
+});
+
 function checkForUpdates() {
     fetch(UPDATE_URL)
         .then(res => res.json())
@@ -123,8 +138,8 @@ function createWindow() {
     ipcMain.handle('load-favorites', () => {
         try {
             if (fs.existsSync(favoritesPath)) {
-                const data = fs.readFileSync(favoritesPath, 'utf8');
-                return JSON.parse(data);
+                const data = fs.readFileSync(favoritesPath, 'utf8').trim();
+                return data ? JSON.parse(data) : [];
             }
         } catch (err) {
             console.error('Erreur chargement favoris:', err);
@@ -138,7 +153,8 @@ function createWindow() {
         try {
             let settings = {};
             if (fs.existsSync(settingsPath)) {
-                settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+                const data = fs.readFileSync(settingsPath, 'utf8').trim();
+                if (data) settings = JSON.parse(data);
             }
             settings.lastPlayedChannel = channelName;
             fs.writeFileSync(settingsPath, JSON.stringify(settings));
@@ -152,8 +168,11 @@ function createWindow() {
     ipcMain.handle('load-last-channel', () => {
         try {
             if (fs.existsSync(settingsPath)) {
-                const settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
-                return settings.lastPlayedChannel || null;
+                const data = fs.readFileSync(settingsPath, 'utf8').trim();
+                if (data) {
+                    const settings = JSON.parse(data);
+                    return settings.lastPlayedChannel || null;
+                }
             }
         } catch (err) {
             console.error('Erreur chargement réglages:', err);

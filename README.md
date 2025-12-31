@@ -17,7 +17,7 @@ Just 1300+ channels, a clean layout, and your content.
 ---
 
 ### Get Started
-1. Grab the latest `.exe` from [Releases](https://github.com/mhdgning131/OpenTV/releases).
+1. Grab the latest `.exe` from [Releases](https://github.com/LibertySoldiers/OpenTV/releases).
 2. Install.
 3. Watch.
 
