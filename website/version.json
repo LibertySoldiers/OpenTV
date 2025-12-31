@@ -1,6 +1,6 @@
 {
     "version": "1.1.1",
-    "url": "https://github.com/LibertySoldiers/OpenTV/releases/download/release/OpenTV.Player.Setup.1.1.1.exe",
+    "url": "https://github.com/LibertySoldiers/OpenTV/releases/download/New1/OpenTV.Player.Setup.1.1.1.exe",
     "sha256": "eb997e1b02ad97c592e84ffff10ae90f3af2917d0f7790ff07adedcd5b935d9b",
     "notes": "Major UI overhaul: Independent Control Center, real-time visual toggles, and new SHA-256 update security verification."
 }
