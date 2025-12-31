@@ -13,9 +13,12 @@ contextBridge.exposeInMainWorld('electronAPI', {
     installUpdate: () => ipcRenderer.send('install-update'),
     saveFavorites: (favorites) => ipcRenderer.invoke('save-favorites', favorites),
     loadFavorites: () => ipcRenderer.invoke('load-favorites'),
-    saveLastChannel: (name) => ipcRenderer.invoke('save-last-channel', name),
-    loadLastChannel: () => ipcRenderer.invoke('load-last-channel'),
+    saveSettings: (settings) => ipcRenderer.invoke('save-settings', settings),
+    loadSettings: () => ipcRenderer.invoke('load-settings'),
+    selectM3UFile: () => ipcRenderer.invoke('select-m3u-file'),
     onUpdateProgress: (callback) => ipcRenderer.on('update-progress', (_event, percent) => callback(percent)),
     onUpdateDownloaded: (callback) => ipcRenderer.on('update-downloaded', (_event, path) => callback(path)),
-    onUpdateError: (callback) => ipcRenderer.on('update-error', (_event, err) => callback(err))
+    onUpdateError: (callback) => ipcRenderer.on('update-error', (_event, err) => callback(err)),
+    openSettingsWindow: () => ipcRenderer.send('open-settings-window'),
+    onSettingsUpdated: (callback) => ipcRenderer.on('settings-updated', (_event, settings) => callback(settings))
 });

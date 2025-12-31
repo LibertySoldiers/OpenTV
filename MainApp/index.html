@@ -629,57 +629,309 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
 
-        body.pinned #sidebar {
-            transform: translateX(0) !important;
-            opacity: 1 !important;
-            top: 32px !important;
-            bottom: 0 !important;
-            left: 0 !important;
-            width: 320px !important;
-            border-radius: 0 !important;
+        /* Settings Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .settings-modal {
+            width: 520px;
+            background: rgba(15, 15, 20, 0.95);
+            backdrop-filter: blur(40px) saturate(150%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            padding: 40px;
+            color: #fff;
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.8);
+            transform: scale(0.95);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-overlay.active .settings-modal {
+            transform: scale(1);
+        }
+
+        .settings-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .settings-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .close-modal {
+            background: none;
             border: none;
-            border-right: 1px solid var(--glass-border);
-            background: var(--glass-panel);
-            box-shadow: none;
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            padding: 4px;
+            transition: color 0.2s;
         }
 
-        body.pinned #menu-btn {
-            display: none !important;
+        .close-modal:hover {
+            color: #fff;
         }
 
-        body.pinned #player-container {
-            left: 320px !important;
-            width: calc(100% - 320px) !important;
+        .settings-group {
+            margin-bottom: 20px;
         }
 
-        body.pinned #video-controls {
-            left: 40px;
-            right: 40px;
-            bottom: 40px;
+        .settings-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: block;
         }
 
-        #sidebar-pin-btn {
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            margin-bottom: 8px;
+        }
+
+        .setting-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .setting-name {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .setting-desc {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Switch UI */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: .3s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: #fff;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: #0088ff;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(20px);
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-action:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary {
+            background: #0088ff;
+        }
+
+        .btn-primary:hover {
+            background: #0077ee;
+        }
+
+        /* Shortcuts Styling */
+        .shortcut-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding: 8px 0;
+        }
+
+        .shortcut-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        kbd {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 2px 6px;
+            font-family: inherit;
+            font-weight: 700;
+            color: #fff;
+            min-width: 24px;
+            text-align: center;
+            font-size: 11px;
+        }
+
+        /* Opaque Mode Overrides */
+        body.opaque-mode .glass-panel,
+        body.opaque-mode #sidebar,
+        body.opaque-mode #video-controls,
+        body.opaque-mode .settings-modal {
+            background: #0a0a0c !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+
+        body.opaque-mode .channel-item.active {
+            background: #0088ff !important;
+            color: #fff !important;
+        }
+
+        body.opaque-mode #no-selection {
+            background: #000;
+        }
+
+        #open-settings-btn {
             background: none;
             border: none;
             color: rgba(255, 255, 255, 0.4);
             cursor: pointer;
-            padding: 6px;
-            border-radius: 50%;
-            transition: all 0.2s;
+            padding: 8px;
+            border-radius: 12px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: center;
             margin-left: auto;
         }
 
-        #sidebar-pin-btn:hover {
+        #open-settings-btn:hover {
             color: #fff;
             background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
         }
 
-        body.pinned #sidebar-pin-btn {
-            color: #00d4ff;
-            background: rgba(0, 212, 255, 0.1);
+        #reload-prompt {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(0, 136, 255, 0.95);
+            backdrop-filter: blur(20px);
+            color: #fff;
+            padding: 10px 10px 10px 24px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 11000;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #reload-prompt.active {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .reload-btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .reload-btn {
+            background: #fff;
+            color: #0088ff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .reload-btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .reload-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .reload-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         #video-controls.active {
@@ -877,7 +1129,7 @@
 <body>
     <div id="initial-loading">
         <div class="loader"></div>
-        <h2>TV APP</h2>
+        <h2>OpenTV Player - by LibertySoldiers!</h2>
     </div>
     <div id="title-bar">
         <div id="title-bar-title">
@@ -924,9 +1176,11 @@
         <div id="header">
             <div style="display: flex; align-items: center; margin-bottom: 16px;">
                 <h1 style="margin-bottom: 0; flex-grow: 1;">Channels</h1>
-                <button id="sidebar-pin-btn" title="Pin Sidebar">
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-                        <path d="M16 12V4H17V2H7V4H8V12L6 14V16H11V22H13V16H18V14L16 12Z" />
+                <button id="open-settings-btn" title="Settings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                        <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                        <path
+                            d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 0010 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 10a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V10a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
                     </svg>
                 </button>
             </div>
@@ -1002,12 +1256,12 @@
             </div>
         </div>
     </div>
-    <div id="update-notification">
-        <h3>Update available</h3>
-        <p>A new version (<span id="update-version"></span>) is available.</p>
-        <div id="update-actions">
-            <button id="btn-update-download" class="update-btn">Download</button>
-            <button id="btn-update-dismiss" class="update-btn">Later</button>
+
+    <div id="reload-prompt">
+        <span>Engine settings updated.</span>
+        <div class="reload-btn-group">
+            <button class="reload-btn-secondary" id="reload-later-btn">Later</button>
+            <button class="reload-btn" id="immediate-reload-btn">Restart Now</button>
         </div>
     </div>
     <script>
@@ -1022,21 +1276,90 @@
         let timeoutId = null;
         let favorites = new Set();
 
-        // Charger les favoris via Electron (Option B) - On utilise une fonction asynchrone pour l'init
-        async function initFavorites() {
+        let currentSettings = {
+            lastPlayedChannel: null,
+            ambientBlur: true,
+            glassmorphism: true,
+            customM3U: null,
+            customM3UName: null,
+            autoplay: true,
+            lowLatency: true,
+            aggressiveBuffering: false
+        };
+
+        async function initApp() {
+            // Load Settings
+            if (window.electronAPI && window.electronAPI.loadSettings) {
+                const savedSettings = await window.electronAPI.loadSettings();
+                currentSettings = { ...currentSettings, ...savedSettings };
+            }
+
+            // Apply Visual Preferences
+            applyVisualSettings();
+
+            // Load Favorites
             if (window.electronAPI && window.electronAPI.loadFavorites) {
                 const savedFavs = await window.electronAPI.loadFavorites();
                 favorites = new Set(savedFavs);
-            } else {
-                try {
-                    const savedFavs = JSON.parse(localStorage.getItem('favorites') || '[]');
-                    favorites = new Set(savedFavs);
-                } catch (e) {
-                    favorites = new Set();
-                }
             }
-            // Déclencher le chargement de la playlist après avoir récupéré les favoris
+
+            // Start loading playlist
             loadM3UFile();
+
+            // Listen for settings updates from the separate window
+            if (window.electronAPI && window.electronAPI.onSettingsUpdated) {
+                window.electronAPI.onSettingsUpdated((settings) => {
+                    const oldM3U = currentSettings.customM3U;
+                    const oldLatency = currentSettings.lowLatency;
+                    const oldBuffer = currentSettings.aggressiveBuffering;
+
+                    currentSettings = { ...currentSettings, ...settings };
+                    applyVisualSettings();
+
+                    // Only show reload prompt if critical engine settings changed
+                    if (oldM3U !== currentSettings.customM3U ||
+                        oldLatency !== currentSettings.lowLatency ||
+                        oldBuffer !== currentSettings.aggressiveBuffering) {
+                        if (reloadPrompt) reloadPrompt.classList.add('active');
+                    }
+                });
+            }
+        }
+
+        function applyVisualSettings() {
+            document.body.classList.toggle('no-blur-mode', !currentSettings.ambientBlur);
+            document.body.classList.toggle('opaque-mode', !currentSettings.glassmorphism);
+
+            // Cinema Light Engine real-time toggle logic
+            const ambientCanvas = document.getElementById('ambient-canvas');
+            if (ambientCanvas) {
+                ambientCanvas.style.display = currentSettings.ambientBlur ? 'block' : 'none';
+            }
+
+            const blurToggle = document.getElementById('toggle-blur');
+            const glassToggle = document.getElementById('toggle-glass');
+            const autoplayToggle = document.getElementById('toggle-autoplay');
+            const latencyToggle = document.getElementById('toggle-low-latency');
+            const bufferToggle = document.getElementById('toggle-buffer');
+
+            if (blurToggle) blurToggle.checked = currentSettings.ambientBlur;
+            if (glassToggle) glassToggle.checked = currentSettings.glassmorphism;
+            if (autoplayToggle) autoplayToggle.checked = currentSettings.autoplay;
+            if (latencyToggle) latencyToggle.checked = currentSettings.lowLatency;
+            if (bufferToggle) bufferToggle.checked = currentSettings.aggressiveBuffering;
+
+            const m3uName = document.getElementById('current-m3u-name');
+            if (m3uName) {
+                m3uName.textContent = currentSettings.customM3UName || 'Using built-in repository';
+            }
+        }
+
+        async function saveSettings(newSettings) {
+            currentSettings = { ...currentSettings, ...newSettings };
+            if (window.electronAPI && window.electronAPI.saveSettings) {
+                await window.electronAPI.saveSettings(currentSettings);
+            }
+            applyVisualSettings();
         }
         function getStreamUrl(originalUrl) {
             if (USE_PROXY && !originalUrl.startsWith('http://localhost')) {
@@ -1085,7 +1408,7 @@
             }
         }
         function startAmbient() {
-            if (!ambientIntervalId && !video.paused && !video.ended && document.hasFocus()) {
+            if (currentSettings.ambientBlur && !ambientIntervalId && !video.paused && !video.ended && document.hasFocus()) {
                 ambientCanvas.style.opacity = '1';
                 ctx.globalAlpha = 1.0;
                 if (video.readyState >= 2) {
@@ -1256,8 +1579,8 @@
             currentUrl = url;
             currentChannel = channel;
 
-            if (window.electronAPI && window.electronAPI.saveLastChannel) {
-                window.electronAPI.saveLastChannel(channel.name);
+            if (window.electronAPI && window.electronAPI.saveSettings) {
+                saveSettings({ lastPlayedChannel: channel.name });
             } else {
                 localStorage.setItem('lastPlayedChannel', channel.name);
             }
@@ -1313,7 +1636,9 @@
             const hls = new Hls({
                 debug: false,
                 enableWorker: true,
-                lowLatencyMode: true,
+                lowLatencyMode: currentSettings.lowLatency,
+                maxBufferLength: currentSettings.aggressiveBuffering ? 60 : 30,
+                maxMaxBufferLength: currentSettings.aggressiveBuffering ? 120 : 60,
             });
             currentPlayer = hls;
             hls.loadSource(proxyUrl);
@@ -1441,12 +1766,14 @@
         }
         async function loadM3UFile() {
             try {
-                loadingStatus.textContent = 'Chargement de la playlist...';
-                const response = await fetch(M3U_FILE_PATH);
-                if (!response.ok) {
-                    throw new Error(`Failed to load M3U file: ${response.status}`);
+                let content;
+                if (currentSettings.customM3U) {
+                    content = currentSettings.customM3U;
+                } else {
+                    const response = await fetch(M3U_FILE_PATH);
+                    if (!response.ok) throw new Error(`Failed to load: ${response.status}`);
+                    content = await response.text();
                 }
-                const content = await response.text();
                 loadingStatus.textContent = 'Analyse des chaînes...';
                 allChannels = parseM3U(content);
                 loadingStatus.textContent = `${allChannels.length} CHAINES TROUVEES. PREPARATION...`;
@@ -1493,12 +1820,7 @@
                 });
                 listContainer.appendChild(fragment);
 
-                let lastPlayedName = null;
-                if (window.electronAPI && window.electronAPI.loadLastChannel) {
-                    lastPlayedName = await window.electronAPI.loadLastChannel();
-                } else {
-                    lastPlayedName = localStorage.getItem('lastPlayedChannel');
-                }
+                const lastPlayedName = currentSettings.autoplay ? (currentSettings.lastPlayedChannel || localStorage.getItem('lastPlayedChannel')) : null;
 
                 if (lastPlayedName) {
                     const savedChannelIndex = allChannels.findIndex(c => c.name === lastPlayedName);
@@ -1607,34 +1929,55 @@
                 document.body.classList.remove('sidebar-open');
             }
         });
-        const pinBtn = document.getElementById('title-pin-btn');
+        const openSettingsBtn = document.getElementById('open-settings-btn');
         const minBtn = document.getElementById('title-min-btn');
         const maxBtn = document.getElementById('title-max-btn');
         const closeBtn = document.getElementById('title-close-btn');
-        async function togglePin() {
-            if (window.electronAPI && window.electronAPI.toggleAlwaysOnTop) {
-                const isPinned = await window.electronAPI.toggleAlwaysOnTop();
-                if (isPinned) {
-                    pinBtn.classList.add('pinned');
-                    pinBtn.title = 'Unpin from top (P)';
-                } else {
-                    pinBtn.classList.remove('pinned');
-                    pinBtn.title = 'Pin on top (P)';
+
+        if (openSettingsBtn) {
+            openSettingsBtn.addEventListener('click', () => {
+                if (window.electronAPI && window.electronAPI.openSettingsWindow) {
+                    window.electronAPI.openSettingsWindow();
                 }
-            } else {
-                console.log('Pin feature only available in desktop app');
-            }
+            });
         }
-        (async function initPinState() {
-            if (window.electronAPI && window.electronAPI.getAlwaysOnTop) {
-                const isPinned = await window.electronAPI.getAlwaysOnTop();
-                if (isPinned) {
-                    pinBtn.classList.add('pinned');
-                    pinBtn.title = 'Unpin from top (P)';
+
+        const reloadPrompt = document.getElementById('reload-prompt');
+        const immediateReloadBtn = document.getElementById('immediate-reload-btn');
+        const reloadLaterBtn = document.getElementById('reload-later-btn');
+
+        function showReloadPrompt() {
+            if (reloadPrompt) reloadPrompt.classList.add('active');
+        }
+
+        if (reloadLaterBtn) {
+            reloadLaterBtn.addEventListener('click', () => {
+                reloadPrompt.classList.remove('active');
+            });
+        }
+
+        if (immediateReloadBtn) {
+            immediateReloadBtn.addEventListener('click', () => {
+                location.reload();
+            });
+        }
+
+        const pinBtn = document.getElementById('title-pin-btn');
+        if (pinBtn) {
+            pinBtn.addEventListener('click', async () => {
+                if (window.electronAPI && window.electronAPI.toggleAlwaysOnTop) {
+                    const isPinned = await window.electronAPI.toggleAlwaysOnTop();
+                    pinBtn.classList.toggle('pinned', isPinned);
                 }
-            }
-        })();
-        if (pinBtn) pinBtn.addEventListener('click', togglePin);
+            });
+
+            (async function () {
+                if (window.electronAPI && window.electronAPI.getAlwaysOnTop) {
+                    const isPinned = await window.electronAPI.getAlwaysOnTop();
+                    pinBtn.classList.toggle('pinned', isPinned);
+                }
+            })();
+        }
         if (minBtn) {
             minBtn.addEventListener('click', () => {
                 if (window.electronAPI && window.electronAPI.minimize) {
@@ -1939,25 +2282,9 @@
                 }
             });
         }
-        const sidebarPinBtn = document.getElementById('sidebar-pin-btn');
-        function toggleSidebarPin() {
-            document.body.classList.toggle('pinned');
-            const isPinned = document.body.classList.contains('pinned');
-            localStorage.setItem('sidebarPinned', isPinned);
-        }
-        if (sidebarPinBtn) {
-            sidebarPinBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                toggleSidebarPin();
-            });
-        }
-        if (localStorage.getItem('sidebarPinned') === 'true') {
-            document.body.classList.add('pinned');
-        }
 
         // Lancement de l'initialisation des favoris (qui lancera loadM3UFile)
-        initFavorites();
+        initApp();
         const updateNotification = document.getElementById('update-notification');
         const updateVersionSpan = document.getElementById('update-version');
         const btnDownload = document.getElementById('btn-update-download');

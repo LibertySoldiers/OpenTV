@@ -1,4 +1,4 @@
-const { app, BrowserWindow, session, ipcMain, shell } = require('electron');
+const { app, BrowserWindow, session, ipcMain, shell, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const https = require('https');
@@ -16,6 +16,7 @@ app.commandLine.appendSwitch('disable-http-cache'); // Désactive le cache disqu
 app.commandLine.appendSwitch('disk-cache-size', '1'); // Force la taille du cache à 1 octet
 
 let mainWindow = null;
+let settingsWindow = null;
 const UPDATE_URL = 'https://open-tv.pages.dev/version.json';
 const CHECK_INTERVAL = 24 * 60 * 60 * 1000;
 
@@ -95,25 +96,32 @@ function createWindow() {
         return mainWindow.isAlwaysOnTop();
     });
 
-    ipcMain.handle('window-minimize', () => {
-        mainWindow.minimize();
+    ipcMain.handle('window-minimize', (event) => {
+        const win = BrowserWindow.fromWebContents(event.sender);
+        if (win) win.minimize();
     });
 
-    ipcMain.handle('window-maximize', () => {
-        if (mainWindow.isMaximized()) {
-            mainWindow.unmaximize();
-        } else {
-            mainWindow.maximize();
+    ipcMain.handle('window-maximize', (event) => {
+        const win = BrowserWindow.fromWebContents(event.sender);
+        if (win) {
+            if (win.isMaximized()) {
+                win.unmaximize();
+            } else {
+                win.maximize();
+            }
+            return win.isMaximized();
         }
-        return mainWindow.isMaximized();
+        return false;
     });
 
-    ipcMain.handle('window-close', () => {
-        mainWindow.close();
+    ipcMain.handle('window-close', (event) => {
+        const win = BrowserWindow.fromWebContents(event.sender);
+        if (win) win.close();
     });
 
-    ipcMain.handle('window-is-maximized', () => {
-        return mainWindow.isMaximized();
+    ipcMain.handle('window-is-maximized', (event) => {
+        const win = BrowserWindow.fromWebContents(event.sender);
+        return win ? win.isMaximized() : false;
     });
 
     ipcMain.handle('open-external', async (event, url) => {
@@ -149,15 +157,20 @@ function createWindow() {
 
     const settingsPath = path.join(app.getPath('userData'), 'settings.json');
 
-    ipcMain.handle('save-last-channel', (event, channelName) => {
+    ipcMain.handle('save-settings', (event, newSettings) => {
         try {
             let settings = {};
             if (fs.existsSync(settingsPath)) {
                 const data = fs.readFileSync(settingsPath, 'utf8').trim();
                 if (data) settings = JSON.parse(data);
             }
-            settings.lastPlayedChannel = channelName;
+            settings = { ...settings, ...newSettings };
             fs.writeFileSync(settingsPath, JSON.stringify(settings));
+
+            // Notifier la fenêtre principale
+            if (mainWindow && !mainWindow.isDestroyed()) {
+                mainWindow.webContents.send('settings-updated', settings);
+            }
             return true;
         } catch (err) {
             console.error('Erreur sauvegarde réglages:', err);
@@ -165,17 +178,64 @@ function createWindow() {
         }
     });
 
-    ipcMain.handle('load-last-channel', () => {
+    ipcMain.on('open-settings-window', () => {
+        if (settingsWindow) {
+            settingsWindow.focus();
+            return;
+        }
+
+        settingsWindow = new BrowserWindow({
+            width: 580,
+            height: 720,
+            frame: false,
+            parent: mainWindow,
+            modal: false,
+            backgroundColor: '#0a0a0c',
+            icon: path.join(__dirname, 'icon.ico'),
+            autoHideMenuBar: true,
+            resizable: false,
+            webPreferences: {
+                nodeIntegration: false,
+                contextIsolation: true,
+                preload: path.join(__dirname, 'preload.js'),
+                sandbox: true,
+                partition: 'memory'
+            }
+        });
+
+        settingsWindow.loadFile(path.join(__dirname, 'settings.html'));
+
+        settingsWindow.on('closed', () => {
+            settingsWindow = null;
+        });
+    });
+
+    ipcMain.handle('load-settings', () => {
         try {
             if (fs.existsSync(settingsPath)) {
                 const data = fs.readFileSync(settingsPath, 'utf8').trim();
-                if (data) {
-                    const settings = JSON.parse(data);
-                    return settings.lastPlayedChannel || null;
-                }
+                return data ? JSON.parse(data) : {};
             }
         } catch (err) {
             console.error('Erreur chargement réglages:', err);
+        }
+        return {};
+    });
+
+    ipcMain.handle('select-m3u-file', async () => {
+        const result = await dialog.showOpenDialog(mainWindow, {
+            properties: ['openFile'],
+            filters: [{ name: 'M3U Playlists', extensions: ['m3u', 'm3u8', 'txt'] }]
+        });
+
+        if (!result.canceled && result.filePaths.length > 0) {
+            try {
+                const content = fs.readFileSync(result.filePaths[0], 'utf8');
+                return { name: path.basename(result.filePaths[0]), content: content };
+            } catch (err) {
+                console.error('Erreur lecture fichier M3U:', err);
+                return null;
+            }
         }
         return null;
     });
