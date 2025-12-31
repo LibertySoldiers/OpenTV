@@ -2,18 +2,16 @@
   "name": "opentv-player",
   "version": "1.1.0",
   "description": "Modern IPTV Player Desktop App",
-  "author": "MohamedG.",
+  "author": "LibertySoldiers!",
   "license": "Unlicense",
   "main": "./MainApp/main.js",
   "scripts": {
     "start": "electron .",
     "proxy": "node proxy-server.js",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder",
-    "tauri": "tauri"
+    "dist": "electron-builder"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2.9.6",
     "electron": "28.3.3",
     "electron-builder": "^24.9.1",
     "sharp": "^0.34.5"
@@ -22,10 +20,14 @@
     "appId": "com.opentv.player",
     "productName": "OpenTV Player",
     "compression": "maximum",
+    "afterPack": "./scripts/clean-locales.js",
     "icon": "MainApp/icon.ico",
     "files": [
       "MainApp/**/*",
-      "package.json"
+      "package.json",
+      "!**/*.md",
+      "!**/*.gitignore",
+      "!MainApp/index.m3u"
     ],
     "win": {
       "target": "nsis",
