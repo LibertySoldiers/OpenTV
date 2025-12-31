@@ -26,13 +26,24 @@ Just 1300+ channels, a clean layout, and your content.
 
 ---
 
-### Rules of the game (License)
-This project is protected under the **Polyform Noncommercial License 1.0.0**.
+### Security & Privacy
+Certainly the most hardened IPTV players:
+- **Full Sandboxing**: The interface is isolated in a secure bubble, preventing any malicious stream from accessing your system.
+- **In-Memory Session**: All cookies, video cache, and session data are stored in RAM. Everything is wiped instantly when you close the app.
+- **Lockdown Mode**: Strictly blocks all external navigation and popups. No site can hijack your player.
+- **Zero Permissions**: The app is forbidden from accessing your camera, microphone, or location.
+- **Privacy by Design**: 
+  - **No Analytics**: We don't track you. No Google Analytics, no telemetry.
+  - **What we see**: Nothing. The only outgoing connection is to check for updates (`version.json`).
+  - **Hardened Playlist**: Your playlist (`index.m3u`) is embedded locally inside the application. No external server knows what you are loading.
+  - **What is saved**: Only your Favorites and Last Played Channel are saved locally on your computer.
 
-**LibertySoldiers** means we share with the community, but we don't let anyone profit from our work.
-- **Personal use?** Go for it.
-- **Learning?** Yes.
-- **Selling it?** **Strictly forbidden.**
+---
+
+### Rules of the game (License)
+This project is released under the **Unlicense**.
+
+It is free and unencumbered software released into the public domain. Anyone is free to copy, modify, publish, use, compile, sell, or distribute this software for any purpose, commercial or non-commercial.
 
 ---
 <div align="center">

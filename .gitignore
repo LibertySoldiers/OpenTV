@@ -1,0 +1,38 @@
+# Build and Dist
+dist/
+build/
+out/
+bin/
+obj/
+
+# Dependances
+node_modules/
+jspm_packages/
+
+# Fichiers de playlist (Confidentialité)
+*.m3u
+*.m3u8
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# IDE / Editeurs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environnement
+.env
+.env.local

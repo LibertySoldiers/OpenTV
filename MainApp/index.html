@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,6 +19,7 @@
             --active-bg: #fff;
             --active-text: #000;
         }
+
         * {
             margin: 0;
             padding: 0;
@@ -25,6 +27,7 @@
             -webkit-font-smoothing: antialiased;
             user-select: none;
         }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
             background: #000;
@@ -34,12 +37,14 @@
             overflow: hidden;
             display: flex;
         }
+
         #main {
             position: absolute;
             inset: 0;
             z-index: 1;
             background: #000;
         }
+
         #player-container {
             width: 100%;
             height: 100%;
@@ -49,6 +54,7 @@
             justify-content: center;
             overflow: hidden;
         }
+
         #ambient-canvas {
             position: absolute;
             top: 0;
@@ -64,6 +70,7 @@
             will-change: contents;
             contain: strict;
         }
+
         video {
             position: relative;
             z-index: 2;
@@ -73,6 +80,7 @@
             outline: none;
             box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
         }
+
         #video-click-blocker {
             position: absolute;
             top: 0;
@@ -82,6 +90,7 @@
             z-index: 5;
             cursor: default;
         }
+
         #sidebar {
             position: absolute;
             top: 20px;
@@ -101,19 +110,23 @@
             transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.4s ease;
             box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
         }
+
         #menu-btn:hover~#sidebar,
         #sidebar:hover {
             transform: translateX(0);
             opacity: 1;
         }
+
         #menu-btn.hidden {
             opacity: 0;
             pointer-events: none;
         }
+
         #header {
             padding: 24px 20px 10px;
             flex-shrink: 0;
         }
+
         #header h1 {
             font-size: 13px;
             font-weight: 600;
@@ -122,10 +135,12 @@
             text-transform: uppercase;
             margin-bottom: 16px;
         }
+
         #search-container {
             position: relative;
             margin-bottom: 12px;
         }
+
         #search-input {
             width: 100%;
             background: rgba(255, 255, 255, 0.1);
@@ -137,9 +152,11 @@
             outline: none;
             transition: background 0.2s;
         }
+
         #search-input:focus {
             background: rgba(255, 255, 255, 0.2);
         }
+
         #search-icon {
             position: absolute;
             left: 12px;
@@ -149,6 +166,7 @@
             opacity: 0.5;
             pointer-events: none;
         }
+
         #group-filter {
             width: 100%;
             padding: 10px 14px;
@@ -160,15 +178,18 @@
             cursor: pointer;
             appearance: none;
         }
+
         #channel-list {
             flex: 1;
             overflow-y: auto;
             padding: 10px 12px 20px;
             scrollbar-width: none;
         }
+
         #channel-list::-webkit-scrollbar {
             display: none;
         }
+
         .channel-item {
             display: flex;
             align-items: center;
@@ -181,30 +202,36 @@
             content-visibility: auto;
             contain-intrinsic-size: 52px;
         }
+
         .channel-item:hover {
             background: var(--focus-bg);
             color: #fff;
             transform: scale(1.02);
         }
+
         .channel-item.active {
             background: rgba(255, 255, 255, 0.25);
             color: #fff;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
+
         .channel-item.keyboard-selected {
             background: rgba(0, 200, 255, 0.15);
             color: #fff;
             outline: 2px solid rgba(0, 200, 255, 0.6);
             outline-offset: -2px;
         }
+
         .channel-item.keyboard-selected.active {
             background: rgba(0, 200, 255, 0.25);
             outline-color: rgba(0, 200, 255, 0.8);
         }
+
         .channel-item:hover .fav-btn,
         .channel-item.is-favorite .fav-btn {
             opacity: 1;
         }
+
         .fav-btn {
             opacity: 0;
             background: none;
@@ -218,13 +245,16 @@
             align-items: center;
             justify-content: center;
         }
+
         .fav-btn:hover {
             color: rgba(255, 255, 255, 0.8);
             transform: scale(1.1);
         }
+
         .channel-item.is-favorite .fav-btn {
             color: #ff4081;
         }
+
         .channel-logo {
             width: 32px;
             height: 32px;
@@ -232,6 +262,7 @@
             border-radius: 6px;
             object-fit: contain;
         }
+
         .channel-name {
             font-size: 15px;
             font-weight: 500;
@@ -239,16 +270,20 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
         .channel-item.active .channel-group {
             color: rgba(0, 0, 0, 0.5);
         }
+
         .channel-group {
             display: none;
         }
+
         #stats-bar,
         #sidebar-toggle {
             display: none;
         }
+
         #loading-overlay {
             position: absolute;
             inset: 0;
@@ -258,9 +293,11 @@
             align-items: center;
             z-index: 50;
         }
+
         #loading-overlay.active {
             display: flex;
         }
+
         .loader {
             width: 30px;
             height: 30px;
@@ -269,11 +306,13 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
+
         @keyframes spin {
             to {
                 transform: rotate(360deg);
             }
         }
+
         #menu-btn {
             position: absolute;
             top: 20px;
@@ -292,10 +331,12 @@
             justify-content: center;
             transition: all 0.2s;
         }
+
         #menu-btn:hover {
             background: rgba(255, 255, 255, 0.2);
             transform: scale(1.05);
         }
+
         #category-pills {
             display: flex;
             gap: 8px;
@@ -305,9 +346,11 @@
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
         }
+
         #category-pills::-webkit-scrollbar {
             display: none;
         }
+
         .category-pill {
             padding: 8px 16px;
             background: rgba(255, 255, 255, 0.1);
@@ -320,15 +363,18 @@
             color: rgba(255, 255, 255, 0.7);
             flex-shrink: 0;
         }
+
         .category-pill:hover {
             background: rgba(255, 255, 255, 0.2);
             color: #fff;
         }
+
         .category-pill.active {
             background: #fff;
             color: #000;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
+
         @media (max-width: 768px) {
             #sidebar {
                 width: 85%;
@@ -342,9 +388,11 @@
                 opacity: 1;
                 transition: transform 0.3s ease;
             }
+
             #sidebar.open {
                 transform: translateX(0);
             }
+
             #menu-btn {
                 position: fixed;
                 top: 16px;
@@ -353,15 +401,19 @@
                 opacity: 1 !important;
                 pointer-events: auto !important;
             }
+
             #header {
                 padding-top: 70px;
             }
+
             #sidebar-trigger {
                 display: none;
             }
+
             .channel-item {
                 padding: 14px 12px;
             }
+
             body.sidebar-open::before {
                 content: '';
                 position: fixed;
@@ -370,15 +422,18 @@
                 z-index: 250;
             }
         }
+
         #now-playing-name {
             font-weight: 600;
             font-size: 14px;
         }
+
         #now-playing-text {
             opacity: 0.6;
             font-size: 14px;
             margin-right: 6px;
         }
+
         #initial-loading {
             position: fixed;
             inset: 0;
@@ -390,16 +445,19 @@
             flex-direction: column;
             gap: 20px;
         }
+
         #initial-loading h2 {
             font-size: 16px;
             letter-spacing: 2px;
             font-weight: 400;
             opacity: 0.7;
         }
+
         #warning,
         #restore-sidebar {
             display: none;
         }
+
         #no-selection {
             position: absolute;
             inset: 0;
@@ -412,6 +470,7 @@
             z-index: 0;
             pointer-events: none;
         }
+
         #error-overlay {
             display: none;
             position: absolute;
@@ -423,9 +482,11 @@
             align-items: center;
             flex-direction: column;
         }
+
         #error-overlay.active {
             display: flex;
         }
+
         #title-bar {
             position: absolute;
             top: 0;
@@ -440,6 +501,7 @@
             -webkit-app-region: drag;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
+
         #title-bar-title {
             display: flex;
             align-items: center;
@@ -449,15 +511,18 @@
             font-weight: 500;
             color: rgba(255, 255, 255, 0.7);
         }
+
         #title-bar-title svg {
             width: 16px;
             height: 16px;
             opacity: 0.7;
         }
+
         #title-bar-controls {
             display: flex;
             -webkit-app-region: no-drag;
         }
+
         .title-bar-btn {
             width: 46px;
             height: 25px;
@@ -470,61 +535,77 @@
             justify-content: center;
             transition: background 0.15s, color 0.15s;
         }
+
         .title-bar-btn:hover {
             background: rgba(255, 255, 255, 0.1);
             color: #fff;
         }
+
         .title-bar-btn svg {
             width: 12px;
             height: 12px;
         }
+
         #title-pin-btn.pinned {
             background: rgba(0, 200, 255, 0.0);
             color: #c5dae073;
         }
+
         #title-pin-btn.pinned svg {
             fill: currentColor;
             stroke: currentColor;
         }
+
         #title-pin-btn.pinned:hover {
             background: rgba(0, 200, 255, 0.0);
         }
+
         #title-close-btn:hover {
             background: #e81123;
             color: #fff;
         }
+
         #main {
             top: 0 !important;
         }
+
         #player-container {
             padding-top: 25px;
         }
+
         #sidebar {
             top: 45px !important;
             height: calc(100% - 65px);
         }
+
         #menu-btn {
             top: 45px !important;
         }
+
         @media (max-width: 768px) {
             #title-bar {
                 height: 28px;
             }
+
             .title-bar-btn {
                 width: 40px;
                 height: 28px;
             }
+
             #main {
                 top: 0 !important;
             }
+
             #sidebar {
                 top: 40px !important;
                 height: calc(100% - 40px);
             }
+
             #menu-btn {
                 top: 40px !important;
             }
         }
+
         #video-controls {
             position: absolute;
             bottom: 20px;
@@ -546,6 +627,7 @@
             transform: translateY(10px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
+
         body.pinned #sidebar {
             transform: translateX(0) !important;
             opacity: 1 !important;
@@ -559,18 +641,22 @@
             background: var(--glass-panel);
             box-shadow: none;
         }
+
         body.pinned #menu-btn {
             display: none !important;
         }
+
         body.pinned #player-container {
             left: 320px !important;
             width: calc(100% - 320px) !important;
         }
+
         body.pinned #video-controls {
             left: 40px;
             right: 40px;
             bottom: 40px;
         }
+
         #sidebar-pin-btn {
             background: none;
             border: none;
@@ -584,18 +670,22 @@
             justify-content: center;
             margin-left: auto;
         }
+
         #sidebar-pin-btn:hover {
             color: #fff;
             background: rgba(255, 255, 255, 0.1);
         }
+
         body.pinned #sidebar-pin-btn {
             color: #00d4ff;
             background: rgba(0, 212, 255, 0.1);
         }
+
         #video-controls.active {
             opacity: 1;
             transform: translateY(0);
         }
+
         .control-btn {
             background: none;
             border: none;
@@ -608,19 +698,23 @@
             justify-content: center;
             transition: all 0.2s;
         }
+
         .control-btn:hover {
             background: rgba(255, 255, 255, 0.15);
             color: #fff;
             transform: scale(1.1);
         }
+
         .control-btn svg {
             width: 20px;
             height: 20px;
         }
+
         #play-pause-btn svg {
             width: 24px;
             height: 24px;
         }
+
         .volume-container {
             display: flex;
             align-items: center;
@@ -628,6 +722,7 @@
             width: 140px;
             transition: width 0.3s;
         }
+
         .volume-slider-track {
             flex: 1;
             height: 4px;
@@ -636,6 +731,7 @@
             position: relative;
             cursor: pointer;
         }
+
         .volume-slider-fill {
             position: absolute;
             left: 0;
@@ -645,6 +741,7 @@
             border-radius: 2px;
             width: 100%;
         }
+
         #video-controls #live-badge {
             margin-left: auto;
             display: flex;
@@ -659,31 +756,38 @@
             cursor: pointer;
             transition: all 0.2s;
         }
+
         #video-controls #live-badge:hover {
             background: rgba(255, 255, 255, 0.2);
         }
+
         #video-controls #live-badge.is-live {
             color: #fff;
             background: rgba(255, 0, 0, 0.2);
             box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
         }
+
         #video-controls #live-badge .dot {
             width: 6px;
             height: 6px;
             background: currentColor;
             border-radius: 50%;
         }
+
         video::-webkit-media-controls {
             display: none !important;
         }
+
         #menu-btn {
             opacity: 0.1;
             transition: opacity 0.5s ease 2s;
         }
+
         #menu-btn:hover {
             opacity: 1;
             transition-delay: 0s;
         }
+
         #update-notification {
             position: fixed;
             bottom: 20px;
@@ -701,26 +805,31 @@
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
             animation: slideIn 0.5s cubic-bezier(0.19, 1, 0.22, 1);
         }
+
         #update-notification.active {
             display: flex;
         }
+
         #update-notification h3 {
             font-size: 15px;
             font-weight: 600;
             margin: 0;
             color: #fff;
         }
+
         #update-notification p {
             font-size: 13px;
             color: var(--text-secondary);
             margin: 0;
             line-height: 1.4;
         }
+
         #update-actions {
             display: flex;
             gap: 10px;
             margin-top: 5px;
         }
+
         .update-btn {
             flex: 1;
             padding: 8px;
@@ -731,25 +840,31 @@
             font-weight: 500;
             transition: all 0.2s;
         }
+
         #btn-update-download {
             background: #fff;
             color: #000;
         }
+
         #btn-update-download:hover {
             background: #e6e6e6;
         }
+
         #btn-update-dismiss {
             background: rgba(255, 255, 255, 0.1);
             color: #fff;
         }
+
         #btn-update-dismiss:hover {
             background: rgba(255, 255, 255, 0.2);
         }
+
         @keyframes slideIn {
             from {
                 transform: translateY(100px);
                 opacity: 0;
             }
+
             to {
                 transform: translateY(0);
                 opacity: 1;
@@ -757,6 +872,7 @@
         }
     </style>
 </head>
+
 <body>
     <div id="initial-loading">
         <div class="loader"></div>
@@ -902,7 +1018,7 @@
         </div>
     </div>
     <script>
-        const M3U_FILE_PATH = 'Playlist Integrale France & World.m3u';
+        const M3U_FILE_PATH = 'index.m3u';
         const USE_PROXY = false;
         const PROXY_URL = '';
         let currentPlayer = null;
@@ -912,11 +1028,22 @@
         let groups = new Set();
         let timeoutId = null;
         let favorites = new Set();
-        try {
-            const savedFavs = JSON.parse(localStorage.getItem('favorites') || '[]');
-            favorites = new Set(savedFavs);
-        } catch (e) {
-            favorites = new Set();
+
+        // Charger les favoris via Electron (Option B) - On utilise une fonction asynchrone pour l'init
+        async function initFavorites() {
+            if (window.electronAPI && window.electronAPI.loadFavorites) {
+                const savedFavs = await window.electronAPI.loadFavorites();
+                favorites = new Set(savedFavs);
+            } else {
+                try {
+                    const savedFavs = JSON.parse(localStorage.getItem('favorites') || '[]');
+                    favorites = new Set(savedFavs);
+                } catch (e) {
+                    favorites = new Set();
+                }
+            }
+            // Déclencher le chargement de la playlist après avoir récupéré les favoris
+            loadM3UFile();
         }
         function getStreamUrl(originalUrl) {
             if (USE_PROXY && !originalUrl.startsWith('http://localhost')) {
@@ -1046,7 +1173,14 @@
                 favorites.add(name);
                 element.classList.add('is-favorite');
             }
-            localStorage.setItem('favorites', JSON.stringify([...favorites]));
+
+            // Sauvegarder via Electron (Option B) ou LocalStorage
+            if (window.electronAPI && window.electronAPI.saveFavorites) {
+                window.electronAPI.saveFavorites([...favorites]);
+            } else {
+                localStorage.setItem('favorites', JSON.stringify([...favorites]));
+            }
+
             updateFavoritesPill();
         }
         function updateFavoritesPill() {
@@ -1115,7 +1249,12 @@
             const url = channel.url;
             currentUrl = url;
             currentChannel = channel;
-            localStorage.setItem('lastPlayedChannel', channel.name);
+
+            if (window.electronAPI && window.electronAPI.saveLastChannel) {
+                window.electronAPI.saveLastChannel(channel.name);
+            } else {
+                localStorage.setItem('lastPlayedChannel', channel.name);
+            }
             document.querySelectorAll('.channel-item').forEach(el => el.classList.remove('active'));
             let activeElement = element;
             if (!activeElement) {
@@ -1347,7 +1486,14 @@
                     fragment.appendChild(el);
                 });
                 listContainer.appendChild(fragment);
-                const lastPlayedName = localStorage.getItem('lastPlayedChannel');
+
+                let lastPlayedName = null;
+                if (window.electronAPI && window.electronAPI.loadLastChannel) {
+                    lastPlayedName = await window.electronAPI.loadLastChannel();
+                } else {
+                    lastPlayedName = localStorage.getItem('lastPlayedChannel');
+                }
+
                 if (lastPlayedName) {
                     const savedChannelIndex = allChannels.findIndex(c => c.name === lastPlayedName);
                     if (savedChannelIndex !== -1) {
@@ -1803,7 +1949,9 @@
         if (localStorage.getItem('sidebarPinned') === 'true') {
             document.body.classList.add('pinned');
         }
-        loadM3UFile();
+
+        // Lancement de l'initialisation des favoris (qui lancera loadM3UFile)
+        initFavorites();
         const updateNotification = document.getElementById('update-notification');
         const updateVersionSpan = document.getElementById('update-version');
         const btnDownload = document.getElementById('btn-update-download');
@@ -1850,4 +1998,5 @@
         }
     </script>
 </body>
+
 </html>

@@ -10,7 +10,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
     onUpdateAvailable: (callback) => ipcRenderer.on('update-available', (_event, value) => callback(value)),
     openExternal: (url) => ipcRenderer.invoke('open-external', url),
     downloadUpdate: (url) => ipcRenderer.send('download-update', url),
-    installUpdate: (path) => ipcRenderer.send('install-update', path),
+    installUpdate: () => ipcRenderer.send('install-update'),
+    saveFavorites: (favorites) => ipcRenderer.invoke('save-favorites', favorites),
+    loadFavorites: () => ipcRenderer.invoke('load-favorites'),
+    saveLastChannel: (name) => ipcRenderer.invoke('save-last-channel', name),
+    loadLastChannel: () => ipcRenderer.invoke('load-last-channel'),
     onUpdateProgress: (callback) => ipcRenderer.on('update-progress', (_event, percent) => callback(percent)),
     onUpdateDownloaded: (callback) => ipcRenderer.on('update-downloaded', (_event, path) => callback(path)),
     onUpdateError: (callback) => ipcRenderer.on('update-error', (_event, err) => callback(err))

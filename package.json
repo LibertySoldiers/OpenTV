@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Modern IPTV Player Desktop App",
   "author": "MohamedG.",
+  "license": "Unlicense",
   "main": "./MainApp/main.js",
   "scripts": {
     "start": "electron .",
@@ -11,10 +12,9 @@
     "dist": "electron-builder",
     "tauri": "tauri"
   },
-  "dependencies": {},
   "devDependencies": {
     "@tauri-apps/cli": "^2.9.6",
-    "electron": "^28.0.0",
+    "electron": "28.3.3",
     "electron-builder": "^24.9.1",
     "sharp": "^0.34.5"
   },
@@ -22,7 +22,6 @@
     "appId": "com.opentv.player",
     "productName": "OpenTV Player",
     "compression": "maximum",
-    "afterPack": "build/clean-locales.js",
     "icon": "MainApp/icon.ico",
     "files": [
       "MainApp/**/*",
