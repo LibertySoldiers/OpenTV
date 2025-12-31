@@ -26,8 +26,7 @@
       "MainApp/**/*",
       "package.json",
       "!**/*.md",
-      "!**/*.gitignore",
-      "!MainApp/index.m3u"
+      "!**/*.gitignore"
     ],
     "win": {
       "target": "nsis",
