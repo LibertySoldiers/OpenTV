@@ -40,12 +40,6 @@ Certainly the most hardened IPTV players:
 
 ---
 
-### Rules of the game (License)
-This project is released under the **Unlicense**.
-
-It is free and unencumbered software released into the public domain. Anyone is free to copy, modify, publish, use, compile, sell, or distribute this software for any purpose, commercial or non-commercial.
-
----
 <div align="center">
   <p>By the community, for the community.</p>
   <sub>Copyright (c) 2025 LibertySoldiers</sub>
