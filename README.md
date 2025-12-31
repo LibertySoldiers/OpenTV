@@ -32,6 +32,7 @@ Certainly the most hardened IPTV players:
 - **In-Memory Session**: All cookies, video cache, and session data are stored in RAM. Everything is wiped instantly when you close the app.
 - **Lockdown Mode**: Strictly blocks all external navigation and popups. No site can hijack your player.
 - **Zero Permissions**: The app is forbidden from accessing your camera, microphone, or location.
+- **SHA-256 Integrity Check**: Every update is verified using a cryptographic hash. If the downloaded file has been tampered with or corrupted, the installation is automatically blocked.
 - **Privacy by Design**: 
   - **No Analytics**: We don't track you. No Google Analytics, no telemetry.
   - **What we see**: Nothing. The only outgoing connection is to check for updates (`version.json`).

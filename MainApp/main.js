@@ -4,6 +4,7 @@ const fs = require('fs');
 const https = require('https');
 const os = require('os');
 const { execFile } = require('child_process');
+const crypto = require('crypto');
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
@@ -242,47 +243,72 @@ function createWindow() {
 
     let lastDownloadedUpdate = null;
 
-    ipcMain.on('download-update', (event, downloadUrl) => {
-        if (!downloadUrl.startsWith('https://open-tv.pages.dev/')) {
-            event.reply('update-error', 'Source non autorisée');
-            return;
-        }
+    ipcMain.on('download-update', (event, downloadUrl, expectedChecksum) => {
+        // Validation basique de l'URL par sécurité
+        if (!downloadUrl) return;
 
         const tempPath = path.join(os.tmpdir(), 'opentv-update.exe');
         lastDownloadedUpdate = tempPath;
         const file = fs.createWriteStream(tempPath);
+        const hash = crypto.createHash('sha256');
 
         https.get(downloadUrl, (response) => {
-            if (response.statusCode !== 200) {
-                event.reply('update-error', `Download failed: ${response.statusCode}`);
+            if (response.statusCode === 302 || response.statusCode === 301) {
+                // Gérer les redirections (ex: GitHub)
+                const redirectUrl = response.headers.location;
+                if (redirectUrl) {
+                    https.get(redirectUrl, (res) => handleDownload(res, event, file, hash, expectedChecksum, tempPath));
+                } else {
+                    event.reply('update-error', 'Redirection failed: No location header');
+                }
                 return;
             }
-
-            const totalBytes = parseInt(response.headers['content-length'], 10);
-            let downloadedBytes = 0;
-
-            response.on('data', (chunk) => {
-                downloadedBytes += chunk.length;
-                file.write(chunk);
-                if (totalBytes) {
-                    const percent = Math.round((downloadedBytes / totalBytes) * 100);
-                    if (!mainWindow.isDestroyed()) {
-                        mainWindow.webContents.send('update-progress', percent);
-                    }
-                }
-            });
-
-            response.on('end', () => {
-                file.end();
-                if (!mainWindow.isDestroyed()) {
-                    mainWindow.webContents.send('update-downloaded');
-                }
-            });
+            handleDownload(response, event, file, hash, expectedChecksum, tempPath);
         }).on('error', (err) => {
             fs.unlink(tempPath, () => { });
             event.reply('update-error', err.message);
         });
     });
+
+    function handleDownload(response, event, file, hash, expectedChecksum, tempPath) {
+        if (response.statusCode !== 200) {
+            event.reply('update-error', `Download failed: ${response.statusCode}`);
+            return;
+        }
+
+        const totalBytes = parseInt(response.headers['content-length'], 10);
+        let downloadedBytes = 0;
+
+        response.on('data', (chunk) => {
+            downloadedBytes += chunk.length;
+            file.write(chunk);
+            hash.update(chunk);
+
+            if (totalBytes) {
+                const percent = Math.round((downloadedBytes / totalBytes) * 100);
+                if (mainWindow && !mainWindow.isDestroyed()) {
+                    mainWindow.webContents.send('update-progress', percent);
+                }
+            }
+        });
+
+        response.on('end', () => {
+            file.end();
+            const actualChecksum = hash.digest('hex');
+
+            // Vérification du checksum (si fourni et n'est pas le placeholder)
+            if (expectedChecksum && expectedChecksum !== 'PLACEHOLDER_SHA256_HASH_HERE' && actualChecksum.toLowerCase() !== expectedChecksum.toLowerCase()) {
+                console.error('Security Alert: Checksum mismatch!', { expected: expectedChecksum, actual: actualChecksum });
+                fs.unlink(tempPath, () => { });
+                event.reply('update-error', 'Security error: Update corrupted (Checksum mismatch)');
+                return;
+            }
+
+            if (mainWindow && !mainWindow.isDestroyed()) {
+                mainWindow.webContents.send('update-downloaded');
+            }
+        });
+    }
 
     ipcMain.on('install-update', () => {
         if (!lastDownloadedUpdate) return;

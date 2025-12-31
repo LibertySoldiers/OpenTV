@@ -2298,7 +2298,7 @@
                         if (data.url) {
                             btnDownload.textContent = "Téléchargement...";
                             btnDownload.disabled = true;
-                            window.electronAPI.downloadUpdate(data.url);
+                            window.electronAPI.downloadUpdate(data.url, data.sha256);
                         }
                     };
                     window.electronAPI.onUpdateProgress((percent) => {
